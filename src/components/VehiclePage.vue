@@ -1,18 +1,16 @@
 <template>
   <div class="single-vehicle">
   	<div v-if="loaded">
-	   	<h3>Vehicle details</h3>
 	   	<div class="card">
-	      <div class="card-header">
-	        header
+	      <div class="card-header up-card">
+	        Vehicle details
 	      </div>
 	      <div class="card-body">
 	      	<p >ID: {{vehicleId}}</p>
 	        <p >Vehicle Name: {{vehicleName}}</p>
 	        <p >Vehicle Type: {{vehicleType}}</p>
-	        <p >Vehicle Date: {{vehicleTimestamp}}</p>
-	        <p >Connection: {{vehicleConn}}</p>
-	        <button class="btn btn-success"> Buy Now</button>
+	        <p >Date created: {{new Date(vehicleTimestamp * 1000) | moment('MM/DD/YYYY')}}</p>
+	        <p >Last connection: {{ new Date(vehicleConn * 1000) | moment('MM/DD/YYYY')}}</p>
 	        <router-link :to="'/'" class="btn btn-primary"> Back </router-link>
 	      </div>
 		</div>
@@ -40,7 +38,7 @@ export default {
     }
   },
   beforeCreate (){
-axios.get('http://localhost:3000/vehicles/' + this.$route.params.id)
+axios.get('http://18.223.149.16:3000/vehicles/' + this.$route.params.id)
         .then(response => {
 					this.vehicleId = this.$route.params.id;
 	        this.vehicleName = response.data.name;

@@ -51,16 +51,20 @@ a {
   color: #42b983;
 }
 
-.header {
+/* .header {
     background-image: url(https://this.deakin.edu.au/wp-content/uploads/2017/07/hero_car-e1500958751686.gif);
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
 		height: 100px;
-}
+} */
 
 .navbar-light .navbar-brand {
-     color: white;
+    color: #ffffff94;
+    font-size: 1.55rem;
+    font-weight: bold;
 }
+
+
 
 </style>

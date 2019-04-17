@@ -2,7 +2,7 @@
   <div class="vehicles">
     <h3></h3>
     <div class="card">
-      <div class="card-header">Add a new vehicle</div>
+      <div class="card-header up-card">Add a new vehicle</div>
       <div class="card-body">
         <form class="form-inline" v-on:submit.prevent="onSubmit">
 
@@ -23,7 +23,7 @@
               <option>Hybrid</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group form-input-el">
             <label>Connection date</label>
             <datepicker placeholder="Select Date" v-model="vehicleData.conn" class="form-control ml-sm-2 mr-sm-4 my-2"></datepicker>
           </div>
@@ -41,9 +41,9 @@
           <table class="table">
             <thead>
               <tr>
+                <th>Date</th>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Date</th>
                 <th>Connection</th>
                 <th></th>
               </tr>
@@ -52,13 +52,13 @@
               <tr v-for="vehicle in sortedVehicles" v-bind:key="vehicle._id">
                 <template v-if="editId == vehicle._id">
                   <td>
+                    <input v-model="editVehicleData.timestamp" disabled type="text">
+                  </td>
+                  <td>
                     <input v-model="editVehicleData.name" type="text">
                   </td>
                   <td>
                     <input v-model="editVehicleData.type" type="text">
-                  </td>
-                  <td>
-                    <input v-model="editVehicleData.timestamp" disabled type="text">
                   </td>
                   <td>
                     <datepicker placeholder="Select Date" v-model="editVehicleData.conn"></datepicker>
@@ -74,9 +74,9 @@
                   </td>
                 </template>
                 <template v-else>
+                  <td>{{new Date(vehicle.timestamp * 1000) | moment('MM/DD/YYYY')}}</td>
                   <td>{{vehicle.name}}</td>
                   <td>{{vehicle.type}}</td>
-                  <td>{{new Date(vehicle.timestamp * 1000) | moment('MM/DD/YYYY')}}</td>
                   <td>{{new Date(vehicle.last_successful_connection * 1000) | moment('MM/DD/YYYY')}}</td>
                   <td>
                     <a href="#" class="icon">
@@ -150,17 +150,17 @@ export default {
     },
 
     getVehicles() {
-        axios.get('http://localhost:3000/vehicles')
+        axios.get('http://18.223.149.16:3000/vehicles')
         .then(response => {
           this.vehicles = response.data;
         });
     },
     onSubmit() {
       this.vehicleData.conn = (new Date(this.vehicleData.conn).getTime() / 1000);
-      axios.post('http://localhost:3000/vehicles/', this.vehicleData).then(response => {
+      axios.post('http://18.223.149.16:3000/vehicles/', this.vehicleData).then(response => {
           this.vehicleData.conn = "";
           this.vehicleData.name = "";
-          this.vehicleData.type = "";
+          this.vehicleData.type = "SUV";
           this.getVehicles();
         });
 
@@ -171,7 +171,7 @@ export default {
     },
 
     onDelete(id) {
-      axios.delete('http://localhost:3000/vehicles/' + id).then(response => {
+      axios.delete('http://18.223.149.16:3000/vehicles/' + id).then(response => {
           this.getVehicles();
         });
     },
@@ -191,7 +191,7 @@ export default {
     },
     onEditSubmit(id) {
       this.editVehicleData.conn = (new Date(this.editVehicleData.conn).getTime() / 1000);
-      axios.put('http://localhost:3000/vehicles/' + id,  {name:this.editVehicleData.name, type:this.editVehicleData.type, last_successful_connection:this.editVehicleData.conn}).then(response => {
+      axios.put('http://18.223.149.16:3000/vehicles/' + id,  {name:this.editVehicleData.name, type:this.editVehicleData.type, last_successful_connection:this.editVehicleData.conn}).then(response => {
           this.editId = "";
           this.editVehicleData.name = "";
           this.editVehicleData.type = "";
@@ -225,5 +225,26 @@ h3 {
 
 .footer{
   height: 40px;
+}
+
+.table-responsive {
+    overflow-x: unset;
+}
+
+.mt-5 {
+    margin-top: 4rem !important;
+}
+
+.card.mt-5 {
+    border: 1px solid rgba(0, 0, 0, 0.30);
+}
+
+form label {
+    font-weight: 600;
+    /* font-size: 20px; */
+}
+
+.form-input-el input {
+      border: none !important;
 }
 </style>
